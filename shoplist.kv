@@ -1,24 +1,30 @@
+#: import TextInput kivy.uix.textinput
 
-<CustomPopup>:
+<AddNewPopup>:
     auto_dismiss: False
     #  todo set the date on the title
-    title: "New shopping List"
+    title: app.getDate() + " New Shopping List"
     BoxLayout:
         orientation: "vertical"
-        Label:
-            text: "New shoplist"
+        TextInput:
 
-        Button:
-            text: "Close"
-            on_press: root.dismiss()
+        BoxLayout:
+            # Cancel New/Edit item
+            Button:
+                text: "Cancel"
+                on_press: root.dismiss()
+            # Save the item
+            Button:
+                text: "Save"
+                on_press: root.dismiss()
 
 
 <AppRootLayout>:
     orientation: "vertical"
 
-    BoxLayout:
+    # BoxLayout:
 
         # Popup: When clicked the popup opens
-        Button:
-            text: "Add New"
-            on_press: root.open_popup()
+    Button:
+        text: "Add New"
+        on_press: root.open_addnew_popup()
