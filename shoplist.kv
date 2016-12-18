@@ -1,0 +1,24 @@
+
+<CustomPopup>:
+    auto_dismiss: False
+    #  todo set the date on the title
+    title: "New shopping List"
+    BoxLayout:
+        orientation: "vertical"
+        Label:
+            text: "New shoplist"
+
+        Button:
+            text: "Close"
+            on_press: root.dismiss()
+
+
+<AppRootLayout>:
+    orientation: "vertical"
+
+    BoxLayout:
+
+        # Popup: When clicked the popup opens
+        Button:
+            text: "Add New"
+            on_press: root.open_popup()
