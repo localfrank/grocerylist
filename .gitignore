@@ -20,7 +20,10 @@ lib64/
 parts/
 sdist/
 var/
+<<<<<<< HEAD
 wheels/
+=======
+>>>>>>> d81f3e268ed258910ff05822c4e34be1c2de0dbf
 *.egg-info/
 .installed.cfg
 *.egg
@@ -67,7 +70,11 @@ docs/_build/
 # PyBuilder
 target/
 
+<<<<<<< HEAD
 # Jupyter Notebook
+=======
+# IPython Notebook
+>>>>>>> d81f3e268ed258910ff05822c4e34be1c2de0dbf
 .ipynb_checkpoints
 
 # pyenv
@@ -80,7 +87,10 @@ celerybeat-schedule
 .env
 
 # virtualenv
+<<<<<<< HEAD
 .venv/
+=======
+>>>>>>> d81f3e268ed258910ff05822c4e34be1c2de0dbf
 venv/
 ENV/
 
