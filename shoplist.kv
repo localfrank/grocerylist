@@ -4,7 +4,8 @@
 #: set GREEN "#06A5AB"
 
 <AddNewPopup>:
-    auto_dismiss: False
+    size_hint: .95, .95
+    seperator_color: COLOR(GREEN)
     #  Set the date on the title
     title: app.getDate()
     title_align: "center"
@@ -18,39 +19,47 @@
             BoxLayout:
                 orientation: "vertical"
                 Label:
+                    size_hint_y: .15
                     text: "Name"
                 TextInput:
+                    size_hint_y: .25
                     id: item_name
+                    multiline: False
+                    
                     # text: "Please add new item"
                     hint_text: "Please input the name"
                     hint_text_color: [0.5, 0.5, 0.5, 1.0]
-                    multiline: True
+                    # multiline: True
 
-                Spinner:
-                    id: category
-                    text: "Category"
-                    values: ["Dairy", "Meat & Fish", "Tinned Food", "Fruits & Veget.", "Houseware", "Baked Goods"]
-                    on_text: root.category_clicked(category.text)
+            Spinner:
+                size_hint_y: .25
+                id: category
+                text: "Category"
+                values: ["Dairy", "Meat & Fish", "Tinned Food", "Fruits & Veget.", "Houseware", "Baked Goods"]
+                on_text: root.category_clicked(category.text)
 
-                Button:
-                    text: "Add to shopping list"
-                    on_press: root.add_to_list(item_name.text, category.text)
-                    on_release: item_name.text = ""
+            Button:
+                size_hint_y: .25
+                text: "Add to shopping list"
+                on_press: root.add_to_list(item_name.text, category.text)
+                on_release: item_name.text = ""
 
         BoxLayout:
             id: added_item
             orientation: "vertical"
 
         BoxLayout:
+            size_hint_y: .25
             orientation: "horizontal"
             # Cancel New/Edit item
             Button:
                 text: "Cancel"
                 on_press: root.dismiss()
+
             # todo Save the item
             Button:
                 text: "Save"
-                on_press: root.save_list(item_name.text, category.text)
+                on_press: root.save_list()
 
 <ClearPopup>:
     title: ""
@@ -74,6 +83,7 @@
     BoxLayout:
         orientation: "vertical"
         Label:
+            size_hint_y: .1
             markup: True
             text: "[b]My Shopping List[/b]"
             color: 0, 0, 0, 1
@@ -91,6 +101,7 @@
 
         BoxLayout:
             orientation: "horizontal"
+            size_hint_y: .1
             Button:
                 text: "Clear"
                 on_press: root.clear_items_popup()

@@ -29,6 +29,7 @@ class AddNewPopup(Popup):
         if item_name == "" or item_name == None:
             pass
         else:
+            print(self)
             # Add the item to shoppling list
             item = dict()
             item[category] = item_name
@@ -40,33 +41,36 @@ class AddNewPopup(Popup):
             box = BoxLayout(orientation="horizontal")
             btn_item = Label(text=category + ":" + item_name)
             btn_del = Button(text="Delete")
-            btn_del.bind(on_press=AddNewPopup.delete_item)
+            btn_del.bind(on_press=self.delete_item)
             box.add_widget(btn_item)
             box.add_widget(btn_del)
             self.ids.added_item.add_widget(box)
 
 
-    @staticmethod
-    def delete_item(cls):
+    def delete_item(self, btn):
         '''
         Delete added item from list
         '''
+        print(self.ids)
+        # ."1".remove_widget(btn)
+        print(self)
+        print(btn)
         print("delete_item called")
+        for item in self.shoplist:
+            print(item)
 
-    def save_list(self, item, category):
+
+    def save_list(self):
         '''
         Save the item to Json file
         '''
-        # global shoplist
+        # No saveing operation preceeded if list is empty
         if len(self.shoplist) <= 0:
-            print("Empty shoplist")
             pass
         else:
-            print(len(self.shoplist))
             with open("shoppingList.json", "a") as f:
-                data = {"time.localtime()" : item + ","}
+                data = {"time.localtime()" : "item" + ","}
                 json.dump(data, f)
-            self.shoplist = []
             self.dismiss()
 
     def category_clicked(self, category):
