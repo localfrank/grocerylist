@@ -11,13 +11,16 @@ import time
 # Color the background
 Window.clearcolor = get_color_from_hex("#f4f4f4")
 
-def delete_item(self):
-    '''
-    Delete added item from list
-    '''
-    print("delete_item called")
-
 class AddNewPopup(Popup):
+
+    shoplist = []
+
+    def open(self):
+        '''
+        Initialize the Popup
+        '''
+        self.shoplist = []
+        super(AddNewPopup, self).open()
 
     def add_to_list(self, item_name, category):
         '''
@@ -28,33 +31,42 @@ class AddNewPopup(Popup):
         else:
             # Add the item to shoppling list
             item = dict()
-            __shopplist = []
             item[category] = item_name
-            __shopplist.append(item)
+            self.shoplist.append(item)
+            print(len(self.shoplist))
 
             # Rend the added item on the screen
-            for item in __shopplist:
-                box = BoxLayout(orientation="horizontal")
-                for k, v in item.items():
-                    btn_item = Label(text=k + " " + v)
+            # todo new method will be created!
+            box = BoxLayout(orientation="horizontal")
+            btn_item = Label(text=category + ":" + item_name)
+            btn_del = Button(text="Delete")
+            btn_del.bind(on_press=AddNewPopup.delete_item)
+            box.add_widget(btn_item)
+            box.add_widget(btn_del)
+            self.ids.added_item.add_widget(box)
 
-                btn_del = Button(text="Delete")
-                btn_del.bind(on_press=delete_item)
-                box.add_widget(btn_item)
-                box.add_widget(btn_del)
-                self.ids.added_item.add_widget(box)
 
+    @staticmethod
+    def delete_item(cls):
+        '''
+        Delete added item from list
+        '''
+        print("delete_item called")
 
     def save_list(self, item, category):
         '''
         Save the item to Json file
         '''
-        if item == "" or item == None:
+        # global shoplist
+        if len(self.shoplist) <= 0:
+            print("Empty shoplist")
             pass
         else:
+            print(len(self.shoplist))
             with open("shoppingList.json", "a") as f:
                 data = {"time.localtime()" : item + ","}
                 json.dump(data, f)
+            self.shoplist = []
             self.dismiss()
 
     def category_clicked(self, category):
@@ -119,5 +131,6 @@ class ShopListApp(App):
     def getDate(self):
         return (time.strftime("%Y-%m-%d", time.localtime()))
 
+# ###########################################################
 if __name__ == '__main__':
     ShopListApp().run()
