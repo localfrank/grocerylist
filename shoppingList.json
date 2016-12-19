@@ -1,0 +1,13 @@
+{
+    "shoppingList": {
+                        "2016-12-18": {
+                            "Dairy": ["Milk", "Cheese"],
+                            "Tinned Food": ["Corn"],
+                            "Houseware": ["Water pot"]
+                        },
+                        "2016-12-20": {
+                            "Tinned Food": ["Tomatos", "Pasta saurce"]
+                        }
+                    }
+}
+{"time.localtime()": "fdsffdsfdsf,"}

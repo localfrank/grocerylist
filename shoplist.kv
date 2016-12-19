@@ -1,30 +1,101 @@
 #: import TextInput kivy.uix.textinput
+#: import COLOR kivy.utils.get_color_from_hex
+#: set RED "#F94A69"
+#: set GREEN "#06A5AB"
 
 <AddNewPopup>:
     auto_dismiss: False
-    #  todo set the date on the title
-    title: app.getDate() + " New Shopping List"
+    #  Set the date on the title
+    title: app.getDate()
+    title_align: "center"
+    auto_dismiss: False
     BoxLayout:
         orientation: "vertical"
-        TextInput:
+        display: item_name
+        BoxLayout:
+            orientation: "vertical"
+
+            BoxLayout:
+                orientation: "vertical"
+                Label:
+                    text: "Name"
+                TextInput:
+                    id: item_name
+                    # text: "Please add new item"
+                    hint_text: "Please input the name"
+                    hint_text_color: [0.5, 0.5, 0.5, 1.0]
+                    multiline: True
+
+                Spinner:
+                    id: category
+                    text: "Category"
+                    values: ["Dairy", "Meat & Fish", "Tinned Food", "Fruits & Veget.", "Houseware", "Baked Goods"]
+                    on_text: root.category_clicked(category.text)
+
+                Button:
+                    text: "Add to shopping list"
+                    on_press: root.add_to_list(item_name.text, category.text)
+                    on_release: item_name.text = ""
 
         BoxLayout:
+            id: added_item
+            orientation: "vertical"
+
+        BoxLayout:
+            orientation: "horizontal"
             # Cancel New/Edit item
             Button:
                 text: "Cancel"
                 on_press: root.dismiss()
-            # Save the item
+            # todo Save the item
             Button:
                 text: "Save"
-                on_press: root.dismiss()
+                on_press: root.save_list(item_name.text, category.text)
 
+<ClearPopup>:
+    title: ""
+    BoxLayout:
+        orientation: "vertical"
+        # Clear all items
+        Button:
+            text: "Clear all items"
+            on_press: root.clear_all()
+        # Clear done items
+        Button:
+            text: "Clear done items"
+            on_press: root.clear_done()
+        # Cancel
+        Button:
+            text: "Cancel"
+            on_press: root.dismiss()
 
 <AppRootLayout>:
-    orientation: "vertical"
 
-    # BoxLayout:
+    BoxLayout:
+        orientation: "vertical"
+        Label:
+            markup: True
+            text: "[b]My Shopping List[/b]"
+            color: 0, 0, 0, 1
+            canvas.before:
+                Color:
+                    rgba: [0, 0, 1, 0.2]
+                Rectangle:
+                    pos: self.pos
+                    size: self.size
 
-        # Popup: When clicked the popup opens
-    Button:
-        text: "Add New"
-        on_press: root.open_addnew_popup()
+        BoxLayout:
+            orientation: "vertical"
+            id: shopping_list
+
+
+        BoxLayout:
+            orientation: "horizontal"
+            Button:
+                text: "Clear"
+                on_press: root.clear_items_popup()
+
+            Button:
+                # Popup: When clicked the popup opens
+                text: "Add New"
+                on_press: root.open_addnew_popup()
