@@ -7,20 +7,24 @@ from kivy.uix.button import Button
 from kivy.uix.popup import Popup
 import json
 import time
+import sqlite3
 
 # Color the background
 Window.clearcolor = get_color_from_hex("#f4f4f4")
 
 class AddNewPopup(Popup):
 
-    shoplist = []
+    shoplist = None
+    categories = None
 
     def open(self):
         '''
         Initialize the Popup
         '''
-        self.shoplist = []
+        self.shoplist = dict()
+        self.categories = set()
         super(AddNewPopup, self).open()
+
 
     def add_to_list(self, item_name, category):
         '''
@@ -29,12 +33,19 @@ class AddNewPopup(Popup):
         if item_name == "" or item_name == None:
             pass
         else:
-            print(self)
-            # Add the item to shoppling list
-            item = dict()
-            item[category] = item_name
-            self.shoplist.append(item)
-            print(len(self.shoplist))
+            # When the new category already exists in the shoplist
+            if category in self.categories:
+                self.shoplist[category].append(item_name)
+            else:
+                self.categories.add(category)
+                new_category = []
+                new_category.append(item_name)
+                self.shoplist[category] = new_category
+
+            print(self.shoplist)
+
+            for k,v in self.shoplist.items():
+                print(k + ": " + str(v))
 
             # Rend the added item on the screen
             # todo new method will be created!
@@ -52,7 +63,6 @@ class AddNewPopup(Popup):
         Delete added item from list
         '''
         print(self.ids)
-        # ."1".remove_widget(btn)
         print(self)
         print(btn)
         print("delete_item called")
@@ -64,14 +74,23 @@ class AddNewPopup(Popup):
         '''
         Save the item to Json file
         '''
-        # No saveing operation preceeded if list is empty
-        if len(self.shoplist) <= 0:
-            pass
-        else:
-            with open("shoppingList.json", "a") as f:
-                data = {"time.localtime()" : "item" + ","}
-                json.dump(data, f)
+        # When the shoplist not empty
+        if self.shoplist:
+            with sqlite3.connect('shoplist.db') as conn:
+                cursor = conn.cursor()
+                cursor.execute('CREATE TABLE IF NOT EXISTS grocery_list (create_date varchar(10) primary key, items varchar(200))')
+
+                # for k, v in self.shoplist.items():
+                cursor.execute("INSERT INTO grocery_list (create_date, items) values ("
+                    + (time.strftime("%Y-%m-%d", time.localtime())) + ", "
+                    + str(self.shoplist) + ")")
+                # with open("shoppingList.json", "a") as f:
+                    # data = {"time.localtime()" : "item" + ","}
+                    # json.dump(data, f)
             self.dismiss()
+        else:
+            pass
+
 
     def category_clicked(self, category):
         '''
