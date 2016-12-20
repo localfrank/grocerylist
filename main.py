@@ -44,9 +44,6 @@ class AddNewPopup(Popup):
 
             print(self.shoplist)
 
-            for k,v in self.shoplist.items():
-                print(k + ": " + str(v))
-
             # Rend the added item on the screen
             # todo new method will be created!
             box = BoxLayout(orientation="horizontal")
@@ -74,19 +71,16 @@ class AddNewPopup(Popup):
         '''
         Save the item to Json file
         '''
+        # Append new shoplist to the json file
         # When the shoplist not empty
         if self.shoplist:
-            with sqlite3.connect('shoplist.db') as conn:
-                cursor = conn.cursor()
-                cursor.execute('CREATE TABLE IF NOT EXISTS grocery_list (create_date varchar(10) primary key, items varchar(200))')
+            data = None
+            with open("shoppingList.json", "r") as rf:
+                data = json.load(rf)
+            with open("shoppingList.json", "w") as wf:
+                data["shoppingList"][time.strftime("%Y-%m-%d", time.localtime())] = self.shoplist
+                json.dump(data, wf)
 
-                # for k, v in self.shoplist.items():
-                cursor.execute("INSERT INTO grocery_list (create_date, items) values ("
-                    + (time.strftime("%Y-%m-%d", time.localtime())) + ", "
-                    + str(self.shoplist) + ")")
-                # with open("shoppingList.json", "a") as f:
-                    # data = {"time.localtime()" : "item" + ","}
-                    # json.dump(data, f)
             self.dismiss()
         else:
             pass
