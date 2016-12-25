@@ -1,6 +1,8 @@
 from kivy.app import App
 from kivy.core.window import Window
 from kivy.utils import get_color_from_hex
+from kivy.properties import ObjectProperty
+from kivy.uix.listview import ListItemButton
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.label import Label
 from kivy.uix.button import Button
@@ -12,7 +14,14 @@ import sqlite3
 # Color the background
 Window.clearcolor = get_color_from_hex("#f4f4f4")
 
+class ProductListButton(ListItemButton):
+    pass
+
 class AddNewPopup(Popup):
+
+    product_name = ObjectProperty()
+    product_category = ObjectProperty()
+    product_list = ObjectProperty()
 
     shoplist = None
     categories = None

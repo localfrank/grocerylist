@@ -1,9 +1,15 @@
 #: import TextInput kivy.uix.textinput
 #: import COLOR kivy.utils.get_color_from_hex
+#: import ListAdapter kivy.adapters.listadapter.ListAdapter
 #: set RED "#F94A69"
 #: set GREEN "#06A5AB"
 
 <AddNewPopup>:
+
+    product_name: item_name
+    product_category: category
+    product_list: product_list_view
+
     size_hint: .95, .95
     seperator_color: COLOR(GREEN)
     #  Set the date on the title
@@ -14,15 +20,17 @@
         orientation: "vertical"
         display: item_name
         BoxLayout:
+            size_hint_y: .4
             orientation: "vertical"
 
             BoxLayout:
+                size_hint_y: .5
                 orientation: "vertical"
                 Label:
-                    size_hint_y: .15
+                    size_hint_y: .5
                     text: "Name"
                 TextInput:
-                    size_hint_y: .25
+                    size_hint_y: .5
                     id: item_name
                     multiline: False
 
@@ -49,7 +57,7 @@
             orientation: "vertical"
 
         BoxLayout:
-            size_hint_y: .25
+            size_hint_y: .15
             orientation: "horizontal"
             # Cancel New/Edit item
             Button:
@@ -60,6 +68,13 @@
             Button:
                 text: "Save"
                 on_press: root.save_list()
+
+
+ListView:
+    id: product_list_view
+    adapter:
+        ListAdapter(cls=main.ProductListButton)
+
 
 <ClearPopup>:
     title: ""
