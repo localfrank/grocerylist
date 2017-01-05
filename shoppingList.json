@@ -1,7 +1,9 @@
 {
-    "shoppingList": {
-        "2016-12-18": {"Houseware": ["Water pot"], "Tinned Food": ["Corn"], "Dairy": ["Milk", "Cheese"]},
-        "2016-12-20": {"Category": ["fsdf"]},
-        "2016-12-21": {"Tinned Food": ["Tomatos", "Pasta saurce"]}
+    "shoppingList":
+    {
+        "2017-01-05": {"Category": ["apple", "apple"]},
+        "2016-12-21": {"Tinned Food": ["Tomatos", "Pasta saurce"]},
+        "2016-12-18": {"Tinned Food": ["Corn"], "Dairy": ["Milk", "Cheese"], "Houseware": ["Water pot"]},
+        "2016-12-20": {"Category": ["fsdf"]}
     }
 }

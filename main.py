@@ -1,9 +1,9 @@
 from kivy.app import App
 from kivy.core.window import Window
 from kivy.utils import get_color_from_hex
+from kivy.uix.boxlayout import BoxLayout
 from kivy.properties import ObjectProperty
 from kivy.uix.listview import ListItemButton
-from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.label import Label
 from kivy.uix.button import Button
 from kivy.uix.popup import Popup
@@ -39,41 +39,59 @@ class AddNewPopup(Popup):
         '''
         Add new item to shoppling list
         '''
-        if item_name == "" or item_name == None:
+
+        if self.product_name.text == "" or self.product_name.text == None:
             pass
         else:
+            selected_category = self.product_category.text
+            input_item_name = self.product_name.text
+
             # When the new category already exists in the shoplist
-            if category in self.categories:
-                self.shoplist[category].append(item_name)
+            if selected_category in self.categories:
+                self.shoplist[selected_category].append(input_item_name)
+                self.rend_item(selected_category, input_item_name)
             else:
-                self.categories.add(category)
+                self.categories.add(selected_category)
                 new_category = []
-                new_category.append(item_name)
-                self.shoplist[category] = new_category
+                new_category.append(input_item_name)
+                self.shoplist[selected_category] = new_category
+                self.rend_item(selected_category, input_item_name)
 
-            print(self.shoplist)
+            '''
+            self.product_list.adapter.data.extend([selected_category + " : " + input_item_name])
+            print(type(self.product_list.adapter.data)) # <class 'kivy.properties.ObservableList'>
+            print(len(self.product_list.adapter.data))
+            for item in self.product_list.adapter.data:
+                print(item)
+            print("=====================")
+            self.product_list._trigger_reset_populate()
+            '''
 
-            # Rend the added item on the screen
-            # todo new method will be created!
-            box = BoxLayout(orientation="horizontal")
-            btn_item = Label(text=category + ":" + item_name)
-            btn_del = Button(text="Delete")
-            btn_del.bind(on_press=self.delete_item)
-            box.add_widget(btn_item)
-            box.add_widget(btn_del)
-            self.ids.added_item.add_widget(box)
+    def rend_item(self, selected_category, input_item_name):
+        '''
+        Rend the added item to the view list
+        '''
+        self.product_list.adapter.data.extend([selected_category + " : " + input_item_name])
+        print(type(self.product_list.adapter.data)) # <class 'kivy.properties.ObservableList'>
+        print(len(self.product_list.adapter.data))
+        for item in self.product_list.adapter.data:
+            print(item)
+        print("=====================")
+        self.product_list._trigger_reset_populate()
 
 
     def delete_item(self, btn):
         '''
         Delete added item from list
         '''
-        print(self.ids)
-        print(self)
-        print(btn)
-        print("delete_item called")
-        for item in self.shoplist:
-            print(item)
+        # If item in the list being selected
+        if self.product_list.adapter.selection:
+            # Getting the text of the item selected
+            selection = self.product_list.adapter.selection[0].text
+            # Remove the matching item
+            self.product_list.adapter.data.remove(selection)
+            # Reset the listview
+            self.product_list._trigger_reset_populate()
 
 
     def save_list(self):
@@ -126,9 +144,10 @@ def get_item_list():
     '''
     Get the shopping list when opening the app
     '''
-    with open("shoppingList.json", "a+") as f:
-        item_lsit = json.load(f)
-        return item_lsit
+    with open("shoppingList.json", "r") as rf:
+        shoplist = json.load(rf)
+        for item in shoplist:
+            print(item)
 
 
 class AppRootLayout(BoxLayout):
@@ -147,6 +166,12 @@ class AppRootLayout(BoxLayout):
         '''
         clear_popup = ClearPopup()
         clear_popup.open()
+
+    def display_shoplist(self):
+        '''
+        Display the saved shopping list
+        '''
+        get_item_list()
 
 
 class ShopListApp(App):

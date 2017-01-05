@@ -1,8 +1,13 @@
+#: import main main
 #: import TextInput kivy.uix.textinput
 #: import COLOR kivy.utils.get_color_from_hex
 #: import ListAdapter kivy.adapters.listadapter.ListAdapter
+#: import ListItemButton kivy.uix.listview.ListItemButton
 #: set RED "#F94A69"
 #: set GREEN "#06A5AB"
+
+
+
 
 <AddNewPopup>:
 
@@ -52,9 +57,15 @@
                 on_press: root.add_to_list(item_name.text, category.text)
                 on_release: item_name.text = ""
 
-        BoxLayout:
-            id: added_item
-            orientation: "vertical"
+        # BoxLayout:
+            # id: added_item
+            # orientation: "vertical"
+
+        ListView:
+            id: product_list_view
+            row_height: .9
+            adapter:
+                ListAdapter(data=[], cls=main.ProductListButton)
 
         BoxLayout:
             size_hint_y: .15
@@ -70,10 +81,7 @@
                 on_press: root.save_list()
 
 
-ListView:
-    id: product_list_view
-    adapter:
-        ListAdapter(cls=main.ProductListButton)
+
 
 
 <ClearPopup>:
