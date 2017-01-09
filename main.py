@@ -4,18 +4,17 @@ from kivy.utils import get_color_from_hex
 from kivy.uix.boxlayout import BoxLayout
 from kivy.properties import ObjectProperty
 from kivy.uix.listview import ListItemButton
-from kivy.uix.label import Label
-from kivy.uix.button import Button
 from kivy.uix.popup import Popup
 import json
 import time
-import sqlite3
 
 # Color the background
 Window.clearcolor = get_color_from_hex("#f4f4f4")
 
+
 class ProductListButton(ListItemButton):
     pass
+
 
 class AddNewPopup(Popup):
 
@@ -39,8 +38,7 @@ class AddNewPopup(Popup):
         '''
         Add new item to shoppling list
         '''
-
-        if self.product_name.text == "" or self.product_name.text == None:
+        if self.product_name.text == "" or self.product_name.text is None:
             pass
         else:
             selected_category = self.product_category.text
@@ -72,7 +70,7 @@ class AddNewPopup(Popup):
         Rend the added item to the view list
         '''
         self.product_list.adapter.data.extend([selected_category + " : " + input_item_name])
-        print(type(self.product_list.adapter.data)) # <class 'kivy.properties.ObservableList'>
+        print(type(self.product_list.adapter.data))
         print(len(self.product_list.adapter.data))
         for item in self.product_list.adapter.data:
             print(item)
@@ -119,6 +117,7 @@ class AddNewPopup(Popup):
         '''
         pass
 
+
 class ClearPopup(Popup):
 
     def clear_all(self):
@@ -134,6 +133,7 @@ class ClearPopup(Popup):
         '''
         # todo
         pass
+
 
 def my_callback(instance):
     print('Popup', instance, 'is being dismissed but is prevented!')
@@ -181,6 +181,7 @@ class ShopListApp(App):
 
     def getDate(self):
         return (time.strftime("%Y-%m-%d", time.localtime()))
+
 
 # ###########################################################
 if __name__ == '__main__':
